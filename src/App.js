@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Provider } from 'react-redux';
+import Router from 'react-router-dom/Router';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import withStyles from '@material-ui/core/styles/withStyles';
+import store, { history } from './store';
+import theme, { globalStyles } from 'utils/theme';
+import Routes from 'components/Routes';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Provider store={store}>
+        <Router history={history}>
+          <MuiThemeProvider theme={theme}>
+            <Routes />
+          </MuiThemeProvider>
+        </Router>
+      </Provider>
     );
   }
 }
 
-export default App;
+export default withStyles(globalStyles)(App);
