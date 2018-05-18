@@ -75,8 +75,14 @@ class EditTaskModal extends Component {
     }
   };
 
+  remove = () => {
+    const { id } = this.state;
+    const { firebase, uid } = this.props;
+    firebase.remove(`tasks/${uid}/${id}`).then(() => this.handleClose());
+  };
+
   render() {
-    const { open, title, details } = this.state;
+    const { id, open, title, details } = this.state;
     const { classes } = this.props;
 
     return (
@@ -92,9 +98,11 @@ class EditTaskModal extends Component {
             <IconButton aria-label="Back" onClick={this.handleClose}>
               <ArrowBackIcon />
             </IconButton>
-            <IconButton aria-label="Delete">
-              <DeleteIcon />
-            </IconButton>
+            {id && (
+              <IconButton aria-label="Delete" onClick={this.remove}>
+                <DeleteIcon />
+              </IconButton>
+            )}
           </div>
           <Divider light />
           <div className={classes.body}>

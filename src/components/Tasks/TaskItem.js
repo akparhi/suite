@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import EditIcon from '@material-ui/icons/Edit';
@@ -59,17 +58,13 @@ const TaskItem = ({
       <Paper className={classes.body} elevation={0}>
         <div className={classes.bodyContent}>
           {done ? (
-            <Tooltip id="tooltip-icon" title="Mark incomplete">
-              <IconButton onClick={toggleStatus(false)}>
-                <CheckCircleIcon className={classes.complete} />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={toggleStatus(false)}>
+              <CheckCircleIcon className={classes.complete} />
+            </IconButton>
           ) : (
-            <Tooltip id="tooltip-icon" title="Mark complete">
-              <IconButton onClick={toggleStatus(true)}>
-                <RadioButtonUncheckedIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton onClick={toggleStatus(true)}>
+              <RadioButtonUncheckedIcon />
+            </IconButton>
           )}
 
           <div className={classes.task}>
@@ -83,15 +78,11 @@ const TaskItem = ({
         </div>
 
         <div>
-          <Tooltip id="tooltip-icon" title="Edit details">
-            <IconButton
-              onClick={() =>
-                showModal('EDIT_TASK', { id, title, details, done })
-              }
-            >
-              <EditIcon />
-            </IconButton>
-          </Tooltip>
+          <IconButton
+            onClick={() => showModal('EDIT_TASK', { id, title, details, done })}
+          >
+            <EditIcon />
+          </IconButton>
         </div>
       </Paper>
 
