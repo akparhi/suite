@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
+// import SettingsIcon from '@material-ui/icons/Settings';
 import TodayIcon from '@material-ui/icons/Today';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
@@ -23,9 +24,10 @@ const styles = {
     justifyContent: 'space-between',
     marginBottom: 32
   },
-  logoutButton: {
+  actionButton: {
     marginBottom: '0.35em',
-    borderRadius: 100
+    borderRadius: 100,
+    color: '#5f6368'
   },
   root: {
     flexGrow: 1
@@ -50,6 +52,10 @@ const styles = {
   otherLogo: {
     fontSize: 72,
     color: '#34a853'
+  },
+  actionButtons: {
+    display: 'flex',
+    alignItems: 'center'
   }
 };
 
@@ -63,14 +69,21 @@ const Home = ({ classes, firebase }) => {
         <Typography variant="display1" gutterBottom>
           Home
         </Typography>
-        <div>
-          <Button
-            color="secondary"
-            className={classes.logoutButton}
-            onClick={() => firebase.logout()}
-          >
-            Logout
-          </Button>
+        <div className={classes.actionButtons}>
+          {/* <div>
+            <Button aria-label="Settings Link" className={classes.actionButton}>
+              <SettingsIcon />
+            </Button>
+          </div> */}
+          <div>
+            <Button
+              color="secondary"
+              className={classes.actionButton}
+              onClick={() => firebase.logout()}
+            >
+              Logout
+            </Button>
+          </div>
         </div>
       </div>
 

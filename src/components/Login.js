@@ -71,9 +71,7 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
           size="large"
           color="primary"
           className={classes.button}
-          onClick={() =>
-            firebase.login({ provider: 'google', type: 'redirect' })
-          }
+          onClick={() => firebase.login({ provider: 'google', type: 'popup' })}
         >
           Sign In with Google
         </Button>

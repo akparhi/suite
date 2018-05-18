@@ -2,16 +2,21 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Link from 'react-router-dom/Link';
 import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 import mars from 'assets/images/mars.jpg';
+
+import TaskList from 'components/Tasks/TaskList';
+import AddTask from 'components/Tasks/AddTask';
 
 const HomeLink = props => <Link to="/" {...props} />;
 
 const styles = {
   container: {
-    minHeight: '100vh'
+    height: '100vh',
+    display: 'flex',
+    flexDirection: 'column'
   },
   theme: {
     position: 'absolute',
@@ -35,7 +40,8 @@ const styles = {
     color: '#fff'
   },
   title: {
-    color: '#fff'
+    color: '#fff',
+    marginLeft: 2
   }
 };
 
@@ -56,6 +62,10 @@ const Tasks = ({ classes }) => {
           Tasks
         </Typography>
       </div>
+
+      <TaskList />
+      <Divider />
+      <AddTask />
     </div>
   );
 };

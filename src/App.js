@@ -6,6 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import store, { history } from './store';
 import theme, { globalStyles } from 'utils/theme';
 import Routes from 'components/Routes';
+import Modal from 'components/modals';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
         <Router history={history}>
           <MuiThemeProvider theme={theme}>
             <Routes />
+            <Modal />
           </MuiThemeProvider>
         </Router>
       </Provider>

@@ -76,6 +76,9 @@ export default createMuiTheme({
         fontSize: 16,
         lineHeight: '20px'
       },
+      multiline: {
+        padding: '4px 8px 4px 8px'
+      },
       underline: {
         '&:after': {
           borderBottom: '2px solid #4285f4',

@@ -2,6 +2,7 @@
   "name": "firebase",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://binarylogician.github.io/suite",
   "dependencies": {
     "@material-ui/core": "^1.0.0-rc.0",
     "@material-ui/icons": "^1.0.0-rc.0",
@@ -19,7 +20,9 @@
     "analyze": "source-map-explorer build/static/js/main.*",
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom"
+    "test": "react-scripts test --env=jsdom",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "development": [
@@ -35,6 +38,7 @@
   },
   "devDependencies": {
     "eslint-plugin-prettier": "^2.6.0",
+    "gh-pages": "^1.1.0",
     "husky": "^0.14.3",
     "prettier": "^1.12.1",
     "pretty-quick": "^1.4.1",
