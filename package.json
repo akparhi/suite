@@ -2,7 +2,7 @@
   "name": "firebase",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://binarylogician.github.io/suite",
+  "homepage": "https://binarylogician.github.io/suite/",
   "dependencies": {
     "@material-ui/core": "^1.0.0-rc.0",
     "@material-ui/icons": "^1.0.0-rc.0",

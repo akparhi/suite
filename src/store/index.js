@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
-import createHistory from 'history/createBrowserHistory';
+import createHistory from 'history/createHashHistory';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
