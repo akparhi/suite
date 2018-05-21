@@ -46,12 +46,12 @@ const styles = {
 const TaskItem = ({
   classes,
   firebase,
-  uid,
+  taskListId,
   showModal,
   task: { id, title, details, done }
 }) => {
   const toggleStatus = done => () =>
-    firebase.update(`tasks/${uid}/${id}`, { done });
+    firebase.update(`tasklists/${taskListId}/tasks/${id}`, { done });
 
   return (
     <div className={classes.container}>
@@ -79,7 +79,9 @@ const TaskItem = ({
 
         <div>
           <IconButton
-            onClick={() => showModal('EDIT_TASK', { id, title, details, done })}
+            onClick={() =>
+              showModal('EDIT_TASK', { taskListId, id, title, details, done })
+            }
           >
             <EditIcon />
           </IconButton>

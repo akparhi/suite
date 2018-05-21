@@ -26,7 +26,7 @@ const styles = {
   }
 };
 
-const AddTask = ({ classes, showModal }) => {
+const AddTask = ({ classes, showModal, taskListId }) => {
   return (
     <div className={classes.container}>
       <div className={classes.buttonContainer}>
@@ -35,7 +35,11 @@ const AddTask = ({ classes, showModal }) => {
           variant="raised"
           className={classes.button}
           color="primary"
-          onClick={() => showModal('EDIT_TASK')}
+          onClick={() => {
+            return taskListId === '__new'
+              ? showModal('EDIT_LIST')
+              : showModal('EDIT_TASK', { taskListId });
+          }}
         >
           <AddIcon className={classes.addIcon} />
           Add a task

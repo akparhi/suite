@@ -1,32 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import { isLoaded, isEmpty } from 'react-redux-firebase';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TaskItem from 'components/Tasks/TaskItem';
 
 const styles = {
   container: {
-    height: 'calc(100vh - 228px)'
+    height: 'calc(100vh - 216px)'
   },
   tasksContainer: {
-    height: 'calc(100vh - 228px)',
-    maxHeight: 'calc(100vh - 228px)',
+    height: 'calc(100vh - 216px)',
+    maxHeight: 'calc(100vh - 216px)',
     overflowY: 'scroll'
   },
   loader: {
-    height: 'calc(100vh - 228px)',
+    height: 'calc(100vh - 216px)',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
   }
 };
 
-const renderTasks = (uid, tasks) => {
+const renderTasks = (taskListId, { tasks = [] } = {}) => {
   let complete = [],
     incomplete = [];
-  // <TaskItem key={key} id={key} task={tasks[key]} />
+
   Object.keys(tasks).forEach((key, id) => {
     if (tasks[key].done) {
       complete.push({
@@ -43,21 +41,23 @@ const renderTasks = (uid, tasks) => {
 
   return (
     <div>
-      {incomplete.map(el => <TaskItem key={el.id} uid={uid} task={el} />)}
-      {complete.map(el => <TaskItem key={el.id} uid={uid} task={el} />)}
+      {incomplete.map(el => (
+        <TaskItem key={el.id} taskListId={taskListId} task={el} />
+      ))}
+      {complete.map(el => (
+        <TaskItem key={el.id} taskListId={taskListId} task={el} />
+      ))}
     </div>
   );
 };
 
-const TaskList = ({ classes, uid, tasks, firebase }) => {
-  const tasksList = !isLoaded(tasks) ? (
+const TaskList = ({ classes, taskListId, tasklists }) => {
+  const tasksList = !isLoaded(tasklists) ? (
     <div className={classes.loader}>
       <CircularProgress />
     </div>
-  ) : isEmpty(tasks) ? (
-    'Empty'
-  ) : (
-    renderTasks(uid, tasks)
+  ) : isEmpty(tasklists) ? null : (
+    renderTasks(taskListId, tasklists[taskListId])
   );
 
   return (
@@ -67,13 +67,4 @@ const TaskList = ({ classes, uid, tasks, firebase }) => {
   );
 };
 
-export default compose(
-  firebaseConnect((props, store) => [
-    `tasks/${store.getState().firebase.auth.uid}`
-  ]),
-  connect(({ firebase: { data, auth } }) => ({
-    uid: auth.uid,
-    tasks: data.tasks && data.tasks[auth.uid]
-  })),
-  withStyles(styles)
-)(TaskList);
+export default withStyles(styles)(TaskList);

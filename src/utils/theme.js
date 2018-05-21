@@ -93,9 +93,43 @@ export default createMuiTheme({
         }
       }
     },
+    MuiSelect: {
+      select: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        '&:focus': {
+          background: 'none'
+        }
+      },
+      icon: {
+        display: 'none'
+      }
+    },
     MuiDialog: {
       paper: {
         borderRadius: 4
+      }
+    },
+    MuiMenu: {
+      paper: {
+        borderRadius: 8,
+        boxShadow:
+          '0px 1px 8px 0px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 3px 3px -2px rgba(0, 0, 0, 0.12)',
+        background: '#fffffff2'
+      }
+    },
+    MuiMenuItem: {
+      root: {
+        fontSize: 16,
+        lineHeight: 'unset',
+        paddingTop: 7,
+        paddingBottom: 7
+      }
+    },
+    MuiList: {
+      padding: {
+        paddingTop: 0,
+        paddingBottom: 0
       }
     }
   }

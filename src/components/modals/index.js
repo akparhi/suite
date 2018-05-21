@@ -2,10 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { hideModal } from 'actions/modal';
 
-import EditTaskModal from 'components/modals/EditTaskModal';
+import EditTaskList from 'components/modals/EditTaskList';
+import EditTask from 'components/modals/EditTask';
 
 const MODALS = {
-  EDIT_TASK: EditTaskModal
+  EDIT_TASKLIST: EditTaskList,
+  EDIT_TASK: EditTask
 };
 
 const ModalRoot = props => {
