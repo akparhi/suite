@@ -35,11 +35,11 @@ const AddTask = ({ classes, showModal, taskListId }) => {
           variant="raised"
           className={classes.button}
           color="primary"
-          onClick={() => {
-            return taskListId === '__new'
-              ? showModal('EDIT_LIST')
-              : showModal('EDIT_TASK', { taskListId });
-          }}
+          onClick={() =>
+            taskListId === '__new'
+              ? showModal('EDIT_TASKLIST')
+              : showModal('EDIT_TASK', { taskListId })
+          }
         >
           <AddIcon className={classes.addIcon} />
           Add a task
