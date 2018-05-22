@@ -5,17 +5,20 @@ import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { showModal } from 'actions/modal';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Link from 'react-router-dom/Link';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import EditIcon from '@material-ui/icons/Edit';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import mars from 'assets/images/mars.jpg';
 import Spacer from 'lib/Spacer';
 import TaskList from 'components/Tasks/TaskList';
 import AddTask from 'components/Tasks/AddTask';
 import { withUIConsumer } from 'providers/ui';
+import { backgrounds, themes } from 'utils/constants';
+
 const HomeLink = props => <Link to="/" {...props} />;
 
 const styles = {
@@ -32,7 +35,6 @@ const styles = {
     height: 160,
     zIndex: -1,
     opacity: 1,
-    backgroundImage: `linear-gradient(to right bottom, rgb(118, 94, 230), rgb(28, 159, 255)), url(${mars})`,
     backgroundRepeat: 'repeat-x',
     backgroundSize: 'cover, 1280px',
     backgroundPosition: 'top',
@@ -52,12 +54,17 @@ const styles = {
     marginBottom: 0
   },
   listSelect: {
-    color: '#f5f5f5',
-    background: '#f8f9fa52',
-    padding: '0 8px',
+    fontSize: 36,
+    color: '#fff',
+    background: 'transparent',
+    marginLeft: 2,
+    padding: 0,
     '&:after': {
       borderBottom: 'none'
     }
+  },
+  actionButton: {
+    color: '#f5f5f5'
   }
 };
 
@@ -70,9 +77,32 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
     ctx.actions.changeTaskListId(value);
   };
 
+  let background = 'mars',
+    theme = 'blue';
+  if (
+    ctx.state.currentTaskListId !== '__new' &&
+    isLoaded(tasklists) &&
+    !isEmpty(tasklists)
+  ) {
+    if (tasklists[ctx.state.currentTaskListId].background) {
+      background = tasklists[ctx.state.currentTaskListId].background;
+    }
+
+    if (tasklists[ctx.state.currentTaskListId].theme) {
+      theme = tasklists[ctx.state.currentTaskListId].theme;
+    }
+  }
+
   return (
     <div className={classes.container}>
-      <div className={classes.theme} />
+      <div
+        className={classes.theme}
+        style={{
+          backgroundImage: `linear-gradient(to right bottom, ${
+            themes[theme]
+          }), url(${backgrounds[background]})`
+        }}
+      />
       <div className={classes.header}>
         <IconButton
           component={HomeLink}
@@ -82,15 +112,12 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
         >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="display1" gutterBottom className={classes.title}>
-          Tasks
-        </Typography>
-        <Spacer />
         <div>
           <Select
             value={currentTaskListId}
             className={classes.listSelect}
             onChange={handleTaskListChange}
+            IconComponent={KeyboardArrowDownIcon}
           >
             {isLoaded(tasklists) &&
               !isEmpty(tasklists) &&
@@ -99,13 +126,46 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
                   {tasklists[taskListId].title}
                 </MenuItem>
               ))}
-            <MenuItem value="__new">Add List</MenuItem>
+            <MenuItem value="__new">New List</MenuItem>
           </Select>
         </div>
-        <div />
+        <Spacer />
+        {currentTaskListId !== '__new' && (
+          <div>
+            <IconButton
+              onClick={() =>
+                showModal('TASKLIST_THEME', {
+                  id: currentTaskListId
+                })
+              }
+              className={classes.actionButton}
+            >
+              <ColorLensIcon style={{ fontSize: 20 }} />
+            </IconButton>
+          </div>
+        )}
+        {currentTaskListId !== '__new' && (
+          <div>
+            <IconButton
+              onClick={() =>
+                showModal('EDIT_TASKLIST', {
+                  id: currentTaskListId,
+                  ...tasklists[currentTaskListId]
+                })
+              }
+              className={classes.actionButton}
+            >
+              <EditIcon style={{ fontSize: 20 }} />
+            </IconButton>
+          </div>
+        )}
       </div>
 
-      <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
+      <TaskList
+        taskListId={currentTaskListId}
+        tasklists={tasklists}
+        loaded={isLoaded(tasklists)}
+      />
       <Divider />
       <AddTask taskListId={currentTaskListId} />
     </div>
@@ -114,19 +174,15 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
 
 export default compose(
   withUIConsumer,
-  firebaseConnect((props, store) => {
-    // do something with route params here
-    // like change the query if you wanna fetch shared lists
-    return [
-      {
-        path: 'tasklists',
-        queryParams: [
-          `orderByChild=createdBy`,
-          `equalTo=${store.getState().firebase.auth.uid}`
-        ]
-      }
-    ];
-  }),
+  firebaseConnect((props, store) => [
+    {
+      path: 'tasklists',
+      queryParams: [
+        `orderByChild=createdBy`,
+        `equalTo=${store.getState().firebase.auth.uid}`
+      ]
+    }
+  ]),
   connect(
     ({ firebase: { data } }, { ctx }) => {
       if (

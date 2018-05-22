@@ -1,5 +1,5 @@
 import React from 'react';
-import { isLoaded, isEmpty } from 'react-redux-firebase';
+import { isEmpty } from 'react-redux-firebase';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import TaskItem from 'components/Tasks/TaskItem';
@@ -51,8 +51,8 @@ const renderTasks = (taskListId, { tasks = [] } = {}) => {
   );
 };
 
-const TaskList = ({ classes, taskListId, tasklists }) => {
-  const tasksList = !isLoaded(tasklists) ? (
+const TaskList = ({ classes, loaded, taskListId, tasklists }) => {
+  const tasksList = !loaded ? (
     <div className={classes.loader}>
       <CircularProgress />
     </div>

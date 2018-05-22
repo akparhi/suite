@@ -51,7 +51,10 @@ const TaskItem = ({
   task: { id, title, details, done }
 }) => {
   const toggleStatus = done => () =>
-    firebase.update(`tasklists/${taskListId}/tasks/${id}`, { done });
+    firebase.update(`tasklists/${taskListId}/tasks/${id}`, {
+      done,
+      doneAt: Date.now()
+    });
 
   return (
     <div className={classes.container}>

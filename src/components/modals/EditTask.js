@@ -65,11 +65,20 @@ class EditTask extends Component {
     const { firebase, taskListId } = this.props;
     if (!id) {
       firebase
-        .push(`tasklists/${taskListId}/tasks`, { title, details, done })
+        .push(`tasklists/${taskListId}/tasks`, {
+          title,
+          details,
+          done,
+          createdAt: Date.now()
+        })
         .then(() => this.handleClose());
     } else {
       firebase
-        .update(`tasklists/${taskListId}/tasks/${id}`, { title, details })
+        .update(`tasklists/${taskListId}/tasks/${id}`, {
+          title,
+          details,
+          updatedAt: Date.now()
+        })
         .then(() => this.handleClose());
     }
   };

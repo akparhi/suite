@@ -4,9 +4,11 @@ const UICtx = createContext();
 
 export class UIProvider extends Component {
   state = {
-    currentTaskListId: '__new'
+    currentTaskListId: '__new',
+    userSearchValue: ''
   };
 
+  changeUserSearchValue = userSearchValue => this.setState({ userSearchValue });
   changeTaskListId = currentTaskListId => this.setState({ currentTaskListId });
 
   render() {
@@ -15,7 +17,8 @@ export class UIProvider extends Component {
         value={{
           state: this.state,
           actions: {
-            changeTaskListId: this.changeTaskListId
+            changeTaskListId: this.changeTaskListId,
+            changeUserSearchValue: this.changeUserSearchValue
           }
         }}
       >

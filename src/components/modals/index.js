@@ -1,13 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { hideModal } from 'actions/modal';
+import Loadable from 'packages/Loadable';
 
-import EditTaskList from 'components/modals/EditTaskList';
-import EditTask from 'components/modals/EditTask';
+const EditTaskList = Loadable(() => import('components/modals/EditTaskList'));
+const EditTask = Loadable(() => import('components/modals/EditTask'));
+const TaskListTheme = Loadable(() => import('components/modals/TaskListTheme'));
 
 const MODALS = {
   EDIT_TASKLIST: EditTaskList,
-  EDIT_TASK: EditTask
+  EDIT_TASK: EditTask,
+  TASKLIST_THEME: TaskListTheme
 };
 
 const ModalRoot = props => {

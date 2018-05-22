@@ -95,14 +95,16 @@ export default createMuiTheme({
     },
     MuiSelect: {
       select: {
-        paddingLeft: 10,
-        paddingRight: 10,
         '&:focus': {
           background: 'none'
         }
       },
+      selectMenu: {
+        minHeight: 'unset',
+        overflow: 'unset'
+      },
       icon: {
-        display: 'none'
+        color: 'inherit'
       }
     },
     MuiDialog: {
@@ -130,6 +132,11 @@ export default createMuiTheme({
       padding: {
         paddingTop: 0,
         paddingBottom: 0
+      }
+    },
+    MuiChip: {
+      root: {
+        borderRadius: 8
       }
     }
   }
