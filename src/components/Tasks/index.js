@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
@@ -15,7 +15,7 @@ import mars from 'assets/images/mars.jpg';
 import Spacer from 'lib/Spacer';
 import TaskList from 'components/Tasks/TaskList';
 import AddTask from 'components/Tasks/AddTask';
-
+import { withUIConsumer } from 'providers/ui';
 const HomeLink = props => <Link to="/" {...props} />;
 
 const styles = {
@@ -61,81 +61,59 @@ const styles = {
   }
 };
 
-class Tasks extends Component {
-  state = {
-    currentTaskListId: '__new'
-  };
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (
-      prevState.currentTaskListId === '__new' &&
-      nextProps.tasklists &&
-      isLoaded(nextProps.tasklists) &&
-      !isEmpty(nextProps.tasklists)
-    )
-      return {
-        currentTaskListId: Object.keys(nextProps.tasklists)[
-          Object.keys(nextProps.tasklists).length - 1
-        ]
-      };
-
-    return null;
-  }
-
-  handleTaskListChange = ({ target: { value } }) => {
+const Tasks = ({ classes, tasklists, ctx, showModal }) => {
+  const { currentTaskListId } = ctx.state;
+  const handleTaskListChange = ({ target: { value } }) => {
     if (value === '__new') {
-      return this.props.showModal('EDIT_TASKLIST');
+      return showModal('EDIT_TASKLIST');
     }
-    this.setState({ currentTaskListId: value });
+    ctx.actions.changeTaskListId(value);
   };
 
-  render() {
-    const { classes, tasklists } = this.props;
-    const { currentTaskListId } = this.state;
-    return (
-      <div className={classes.container}>
-        <div className={classes.theme} />
-        <div className={classes.header}>
-          <IconButton
-            component={HomeLink}
-            size="large"
-            aria-label="Home Link"
-            className={classes.homeButton}
+  return (
+    <div className={classes.container}>
+      <div className={classes.theme} />
+      <div className={classes.header}>
+        <IconButton
+          component={HomeLink}
+          size="large"
+          aria-label="Home Link"
+          className={classes.homeButton}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="display1" gutterBottom className={classes.title}>
+          Tasks
+        </Typography>
+        <Spacer />
+        <div>
+          <Select
+            value={currentTaskListId}
+            className={classes.listSelect}
+            onChange={handleTaskListChange}
           >
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="display1" gutterBottom className={classes.title}>
-            Tasks
-          </Typography>
-          <Spacer />
-          <div>
-            <Select
-              value={currentTaskListId}
-              className={classes.listSelect}
-              onChange={this.handleTaskListChange}
-            >
-              {isLoaded(tasklists) &&
-                !isEmpty(tasklists) &&
-                Object.keys(tasklists).map(taskListId => (
-                  <MenuItem value={taskListId} key={taskListId}>
-                    {tasklists[taskListId].title}
-                  </MenuItem>
-                ))}
-              <MenuItem value="__new">Add List</MenuItem>
-            </Select>
-          </div>
-          <div />
+            {isLoaded(tasklists) &&
+              !isEmpty(tasklists) &&
+              Object.keys(tasklists).map(taskListId => (
+                <MenuItem value={taskListId} key={taskListId}>
+                  {tasklists[taskListId].title}
+                </MenuItem>
+              ))}
+            <MenuItem value="__new">Add List</MenuItem>
+          </Select>
         </div>
-
-        <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
-        <Divider />
-        <AddTask taskListId={currentTaskListId} />
+        <div />
       </div>
-    );
-  }
-}
+
+      <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
+      <Divider />
+      <AddTask taskListId={currentTaskListId} />
+    </div>
+  );
+};
 
 export default compose(
+  withUIConsumer,
   firebaseConnect((props, store) => {
     // do something with route params here
     // like change the query if you wanna fetch shared lists
@@ -150,9 +128,20 @@ export default compose(
     ];
   }),
   connect(
-    ({ firebase: { data } }) => ({
-      tasklists: data.tasklists
-    }),
+    ({ firebase: { data } }, { ctx }) => {
+      if (
+        ctx.state.currentTaskListId === '__new' &&
+        data.tasklists &&
+        isLoaded(data.tasklists) &&
+        !isEmpty(data.tasklists)
+      ) {
+        ctx.actions.changeTaskListId(Object.keys(data.tasklists)[0]);
+      }
+
+      return {
+        tasklists: data.tasklists
+      };
+    },
     { showModal }
   ),
   withStyles(styles)

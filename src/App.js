@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
+import { UIProvider } from 'providers/ui';
 import Router from 'react-router-dom/Router';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,10 +14,12 @@ class App extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <MuiThemeProvider theme={theme}>
-            <Routes />
-            <Modal />
-          </MuiThemeProvider>
+          <UIProvider>
+            <MuiThemeProvider theme={theme}>
+              <Routes />
+              <Modal />
+            </MuiThemeProvider>
+          </UIProvider>
         </Router>
       </Provider>
     );

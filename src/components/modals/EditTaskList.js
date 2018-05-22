@@ -11,6 +11,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import Input from '@material-ui/core/Input';
+import { withUIConsumer } from 'providers/ui';
 
 const styles = theme => ({
   paper: {
@@ -67,15 +68,15 @@ class EditTaskList extends Component {
 
   handleChange = field => e => this.setState({ [field]: e.target.value });
 
-  save = () => {
+  save = async () => {
     const { id, title } = this.state;
-    const { firebase, uid } = this.props;
+    const { firebase, uid, ctx } = this.props;
 
     if (!id) {
-      firebase.push('tasklists', { title, createdBy: uid }).then(n => {
-        console.log(n);
-        this.handleClose();
-      });
+      const key = await firebase.push('tasklists', { title, createdBy: uid })
+        .key;
+      ctx.actions.changeTaskListId(key);
+      this.handleClose();
     } else {
       firebase
         .update(`tasklists/${id}`, { title })
@@ -140,6 +141,7 @@ class EditTaskList extends Component {
 
 export default compose(
   withStyles(styles),
+  withUIConsumer,
   firebaseConnect(),
   connect(({ firebase: { auth } }) => ({
     uid: auth.uid
