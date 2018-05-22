@@ -1,7 +1,6 @@
 import React from 'react';
 import { isEmpty } from 'react-redux-firebase';
 import withStyles from '@material-ui/core/styles/withStyles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import TaskItem from 'components/Tasks/TaskItem';
 
 const styles = {
@@ -12,12 +11,6 @@ const styles = {
     height: 'calc(100vh - 216px)',
     maxHeight: 'calc(100vh - 216px)',
     overflowY: 'scroll'
-  },
-  loader: {
-    height: 'calc(100vh - 216px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
   }
 };
 
@@ -51,14 +44,10 @@ const renderTasks = (taskListId, { tasks = [] } = {}) => {
   );
 };
 
-const TaskList = ({ classes, loaded, taskListId, tasklists }) => {
-  const tasksList = !loaded ? (
-    <div className={classes.loader}>
-      <CircularProgress />
-    </div>
-  ) : isEmpty(tasklists) ? null : (
-    renderTasks(taskListId, tasklists[taskListId])
-  );
+const TaskList = ({ classes, taskListId, tasklists }) => {
+  const tasksList = isEmpty(tasklists)
+    ? null
+    : renderTasks(taskListId, tasklists[taskListId]);
 
   return (
     <div className={classes.container}>

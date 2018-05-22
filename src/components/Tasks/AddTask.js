@@ -38,9 +38,7 @@ const AddTask = ({ classes, showModal, taskListId }) => {
           onClick={() =>
             taskListId === '__new'
               ? showModal('EDIT_TASKLIST')
-              : taskListId === '__none'
-                ? null
-                : showModal('EDIT_TASK', { taskListId })
+              : showModal('EDIT_TASK', { taskListId })
           }
         >
           <AddIcon className={classes.addIcon} />

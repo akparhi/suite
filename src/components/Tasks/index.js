@@ -18,6 +18,7 @@ import TaskList from 'components/Tasks/TaskList';
 import AddTask from 'components/Tasks/AddTask';
 import { withUIConsumer } from 'providers/ui';
 import { backgrounds, themes } from 'utils/constants';
+import Loader from 'lib/Loader';
 
 const HomeLink = props => <Link to="/" {...props} />;
 
@@ -69,6 +70,9 @@ const styles = {
 };
 
 const Tasks = ({ classes, tasklists, ctx, showModal }) => {
+  if (!isLoaded(tasklists)) {
+    return <Loader />;
+  }
   const { currentTaskListId } = ctx.state;
   const handleTaskListChange = ({ target: { value } }) => {
     if (value === '__new') {
@@ -79,11 +83,7 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
 
   let background = 'mars',
     theme = 'blue';
-  if (
-    ctx.state.currentTaskListId !== '__new' &&
-    isLoaded(tasklists) &&
-    !isEmpty(tasklists)
-  ) {
+  if (ctx.state.currentTaskListId !== '__new' && !isEmpty(tasklists)) {
     if (tasklists[ctx.state.currentTaskListId].background) {
       background = tasklists[ctx.state.currentTaskListId].background;
     }
@@ -119,8 +119,7 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
             onChange={handleTaskListChange}
             IconComponent={KeyboardArrowDownIcon}
           >
-            {isLoaded(tasklists) &&
-              !isEmpty(tasklists) &&
+            {!isEmpty(tasklists) &&
               Object.keys(tasklists).map(taskListId => (
                 <MenuItem value={taskListId} key={taskListId}>
                   {tasklists[taskListId].title}
@@ -161,11 +160,7 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
         )}
       </div>
 
-      <TaskList
-        taskListId={currentTaskListId}
-        tasklists={tasklists}
-        loaded={isLoaded(tasklists)}
-      />
+      <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
       <Divider />
       <AddTask taskListId={currentTaskListId} />
     </div>
