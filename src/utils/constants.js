@@ -3,6 +3,11 @@ import mountains from 'assets/images/mountains.jpg';
 import serene from 'assets/images/serene.jpg';
 import plane from 'assets/images/plane.jpg';
 import seahouse from 'assets/images/seahouse.jpg';
+import marsThumb from 'assets/images/thumb_mars.jpg';
+import mountainsThumb from 'assets/images/thumb_mountains.jpg';
+import sereneThumb from 'assets/images/thumb_serene.jpg';
+import planeThumb from 'assets/images/thumb_plane.jpg';
+import seahouseThumb from 'assets/images/thumb_seahouse.jpg';
 
 export const backgrounds = {
   mars,
@@ -10,6 +15,14 @@ export const backgrounds = {
   serene,
   plane,
   seahouse
+};
+
+export const thumbBackgrounds = {
+  mars: marsThumb,
+  mountains: mountainsThumb,
+  serene: sereneThumb,
+  plane: planeThumb,
+  seahouse: seahouseThumb
 };
 
 export const themes = {

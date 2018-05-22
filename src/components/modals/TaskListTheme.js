@@ -6,10 +6,14 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import Divider from '@material-ui/core/Divider';
 import LensIcon from '@material-ui/icons/Lens';
-import { themes } from 'utils/constants';
+import DoneIcon from '@material-ui/icons/Done';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { themes, thumbBackgrounds } from 'utils/constants';
 
 const styles = theme => ({
   paper: {
@@ -32,40 +36,61 @@ const styles = theme => ({
     color: 'rgba(0, 0, 0, 0.54)'
   },
   body: {
-    display: 'flex',
     padding: '16px 32px'
+  },
+  theme: {
+    display: 'flex'
   },
   input: {
     marginBottom: 10
   },
-  backgroundSelect: {
-    '&:after': {
-      borderBottom: 'none'
-    }
+  background: {
+    height: 40,
+    width: 40,
+    opacity: 1,
+    margin: '0 4px',
+    backgroundColor: 'unset',
+    backgroundRepeat: 'repeat-x',
+    backgroundSize: 'cover, 40px',
+    backgroundPosition: 'top',
+    backgroundBlendMode: 'hard-light'
   }
 });
+
+const BackgroundButton = props => <Button {...props} />;
 
 class EditTaskList extends Component {
   state = {
     open: true,
-    id: this.props.id || null
+    id: this.props.id || null,
+    theme: this.props.theme || 'blue',
+    background: this.props.background || 'mars'
   };
 
   handleClose = () => this.setState({ open: false }, this.props.handleClose);
 
   handleChange = field => e => this.setState({ [field]: e.target.value });
 
-  update = theme => {
+  updateTheme = theme => {
     const { id } = this.state;
     const { firebase } = this.props;
 
     firebase
       .update(`tasklists/${id}`, { theme, updatedAt: Date.now() })
-      .then(() => this.handleClose());
+      .then(() => this.setState({ theme }));
+  };
+
+  updateBackground = background => {
+    const { id } = this.state;
+    const { firebase } = this.props;
+
+    firebase
+      .update(`tasklists/${id}`, { background, updatedAt: Date.now() })
+      .then(() => this.setState({ background }));
   };
 
   render() {
-    const { open } = this.state;
+    const { open, theme, background } = this.state;
     const { classes } = this.props;
 
     return (
@@ -91,16 +116,41 @@ class EditTaskList extends Component {
         </div>
         <Divider light />
         <div className={classes.body}>
-          {Object.keys(themes).map((el, i) => (
-            <div key={i}>
-              <IconButton
-                onClick={() => this.update(el)}
-                className={classes.actionButton}
+          <div className={classes.theme}>
+            {Object.keys(themes).map((el, i) => (
+              <div key={i}>
+                <IconButton
+                  onClick={() => this.updateTheme(el)}
+                  className={classes.actionButton}
+                >
+                  {el === theme ? (
+                    <CheckCircleIcon
+                      style={{ color: themes[el].split('), ')[1] }}
+                    />
+                  ) : (
+                    <LensIcon style={{ color: themes[el].split('), ')[1] }} />
+                  )}
+                </IconButton>
+              </div>
+            ))}
+          </div>
+          <div className={classes.theme}>
+            {Object.keys(thumbBackgrounds).map((el, i) => (
+              <Paper
+                key={i}
+                component={BackgroundButton}
+                onClick={() => this.updateBackground(el)}
+                className={classes.background}
+                style={{
+                  backgroundImage: `linear-gradient(to right bottom, ${
+                    themes[theme]
+                  }), url(${thumbBackgrounds[el]})`
+                }}
               >
-                <LensIcon style={{ color: themes[el].split('), ')[1] }} />
-              </IconButton>
-            </div>
-          ))}
+                {background === el && <DoneIcon style={{ color: '#fff' }} />}
+              </Paper>
+            ))}
+          </div>
         </div>
       </Dialog>
     );

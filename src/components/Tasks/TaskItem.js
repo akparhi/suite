@@ -16,6 +16,9 @@ const styles = {
   container: {
     height: 68
   },
+  actionIcon: {
+    visibility: 'hidden'
+  },
   body: {
     height: 67,
     position: 'relative',
@@ -28,6 +31,9 @@ const styles = {
       zIndex: 2,
       boxShadow:
         '0px 1px 5px 0px rgba(0, 0, 0, 0.2),0px 2px 2px 0px rgba(0, 0, 0, 0.14),0px 3px 1px -2px rgba(0, 0, 0, 0.12)'
+    },
+    '&:hover $actionIcon': {
+      visibility: 'visible'
     }
   },
   bodyContent: {
@@ -37,7 +43,9 @@ const styles = {
   complete: {
     color: '#34a853'
   },
-  incomplete: {},
+  incomplete: {
+    color: 'rgba(0, 0, 0, 0.54)'
+  },
   task: {
     marginLeft: 12
   }
@@ -80,7 +88,7 @@ const TaskItem = ({
           </div>
         </div>
 
-        <div>
+        <div className={classes.actionIcon}>
           <IconButton
             onClick={() =>
               showModal('EDIT_TASK', { taskListId, id, title, details, done })

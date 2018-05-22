@@ -11,11 +11,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Divider from '@material-ui/core/Divider';
 import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import MenuItem from '@material-ui/core/MenuItem';
 import { withUIConsumer } from 'providers/ui';
-import { backgrounds } from 'utils/constants';
 
 const styles = theme => ({
   paper: {
@@ -52,11 +48,6 @@ const styles = theme => ({
     padding: '0 24px 12px 24px',
     display: 'flex',
     justifyContent: 'flex-end'
-  },
-  backgroundSelect: {
-    '&:after': {
-      borderBottom: 'none'
-    }
   }
 });
 
@@ -71,8 +62,7 @@ class EditTaskList extends Component {
   state = {
     open: true,
     id: this.props.id || null,
-    title: this.props.title || '',
-    background: this.props.background || 'mars'
+    title: this.props.title || ''
   };
 
   handleClose = () => this.setState({ open: false }, this.props.handleClose);
@@ -80,13 +70,12 @@ class EditTaskList extends Component {
   handleChange = field => e => this.setState({ [field]: e.target.value });
 
   save = async () => {
-    const { id, title, background } = this.state;
+    const { id, title } = this.state;
     const { firebase, uid, ctx } = this.props;
 
     if (!id) {
       const key = await firebase.push('tasklists', {
         title,
-        background,
         createdBy: uid,
         createdAt: Date.now()
       }).key;
@@ -94,7 +83,7 @@ class EditTaskList extends Component {
       this.handleClose();
     } else {
       firebase
-        .update(`tasklists/${id}`, { title, background, updatedAt: Date.now() })
+        .update(`tasklists/${id}`, { title, updatedAt: Date.now() })
         .then(() => this.handleClose());
     }
   };
@@ -106,7 +95,7 @@ class EditTaskList extends Component {
   };
 
   render() {
-    const { id, open, title, background } = this.state;
+    const { id, open, title } = this.state;
     const { classes } = this.props;
 
     return (
@@ -142,19 +131,6 @@ class EditTaskList extends Component {
               onChange={this.handleChange('title')}
               className={classes.input}
             />
-            <Select
-              fullWidth
-              value={background}
-              className={classes.backgroundSelect}
-              onChange={this.handleChange('background')}
-              IconComponent={KeyboardArrowDownIcon}
-            >
-              {Object.keys(backgrounds).map((image, i) => (
-                <MenuItem value={image} key={i}>
-                  {image.replace(/^\w/, c => c.toUpperCase())}
-                </MenuItem>
-              ))}
-            </Select>
           </div>
           <div className={classes.footer}>
             <Button variant="raised" color="primary" onClick={this.save}>

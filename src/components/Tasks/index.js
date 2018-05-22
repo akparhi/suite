@@ -134,7 +134,8 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
             <IconButton
               onClick={() =>
                 showModal('TASKLIST_THEME', {
-                  id: currentTaskListId
+                  id: currentTaskListId,
+                  ...tasklists[currentTaskListId]
                 })
               }
               className={classes.actionButton}
@@ -162,7 +163,7 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
 
       <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
       <Divider />
-      <AddTask taskListId={currentTaskListId} />
+      <AddTask taskListId={currentTaskListId} tasklists={tasklists} />
     </div>
   );
 };
