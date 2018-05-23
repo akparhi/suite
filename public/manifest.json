@@ -1,15 +1,14 @@
 {
-  "short_name": "A Suite",
-  "name": "A Suite",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#4285f4",
-  "background_color": "#ffffff"
+  "short_name": "MeawwDo",
+  "name": "MeawwDo",
+  "manifest_version": 2,
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "index.html",
+    "default_title": "MeawwDo"
+  },
+  "permissions": ["identity"],
+  "content_security_policy":
+    "script-src 'self' https://www.gstatic.com/ https://a-suite.firebaseio.com http://a-suite.firebaseapp.com https://a-suite.firebaseapp.com https://www.googleapis.com https://apis.google.com; object-src 'self'"
 }

@@ -11,6 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import EditIcon from '@material-ui/icons/Edit';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Spacer from 'lib/Spacer';
@@ -69,7 +70,7 @@ const styles = {
   }
 };
 
-const Tasks = ({ classes, tasklists, ctx, showModal }) => {
+const Tasks = ({ classes, tasklists, ctx, showModal, firebase }) => {
   if (!isLoaded(tasklists)) {
     return <Loader />;
   }
@@ -159,6 +160,14 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
             </IconButton>
           </div>
         )}
+        <div>
+          <IconButton
+            onClick={() => firebase.logout()}
+            className={classes.actionButton}
+          >
+            <PowerSettingsNewIcon style={{ fontSize: 20 }} />
+          </IconButton>
+        </div>
       </div>
 
       <TaskList taskListId={currentTaskListId} tasklists={tasklists} />

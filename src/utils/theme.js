@@ -162,6 +162,8 @@ export const globalStyles = {
     body: {
       margin: 0,
       padding: 0,
+      minWidth: 400,
+      minHeight: 600,
       fontFamily: 'Cosmic Sans',
       overflowX: 'hidden'
     },

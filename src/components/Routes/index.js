@@ -11,7 +11,7 @@ import PrivateRoute from 'packages/PrivateRoute';
 import Loadable from 'packages/Loadable';
 
 const Login = Loadable(() => import('components/Login'));
-const AppRoutes = Loadable(() => import('components/Routes/AppRoutes'));
+const Tasks = Loadable(() => import('components/Tasks'));
 
 const Routes = ({ classes, auth }) => {
   if (!isLoaded(auth)) return <Loader />;
@@ -22,7 +22,7 @@ const Routes = ({ classes, auth }) => {
       <PrivateRoute
         exact
         path="/*"
-        component={AppRoutes}
+        component={Tasks}
         authenticated={!!auth && !!auth.uid}
       />
     </Switch>

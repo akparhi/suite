@@ -7,6 +7,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import TodayIcon from '@material-ui/icons/Today';
+import { showModal } from 'actions/modal';
 
 const styles = {
   container: {
@@ -37,7 +38,7 @@ const styles = {
   }
 };
 
-export const LoginPage = ({ firebase, auth, location, classes }) => {
+export const LoginPage = ({ firebase, auth, location, classes, showModal }) => {
   if (!isEmpty(auth)) {
     return (
       <Redirect
@@ -54,7 +55,7 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
       <div className={classes.content}>
         <TodayIcon className={classes.logo} />
         <Typography variant="display2" gutterBottom className={classes.title}>
-          A Suite
+          Meaww Do
         </Typography>
 
         <Typography
@@ -63,7 +64,7 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
           align="center"
           className={classes.subtitle}
         >
-          From work to play, A Suite is the easiest way to get stuff done, every
+          From work to play, MeawwDo is the easiest way to get stuff done, every
           day.
         </Typography>
         <Button
@@ -71,9 +72,18 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
           size="large"
           color="primary"
           className={classes.button}
-          onClick={() => firebase.login({ provider: 'google', type: 'popup' })}
+          onClick={() => showModal('SIGNIN')}
         >
-          Sign In with Google
+          Sign In
+        </Button>
+        <Button
+          variant="raised"
+          size="large"
+          color="primary"
+          className={classes.button}
+          onClick={() => showModal('SIGNIN', { mode: 'signup' })}
+        >
+          Sign Up
         </Button>
       </div>
     </div>
@@ -82,6 +92,6 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
 
 export default compose(
   firebaseConnect(), // withFirebase can also be used
-  connect(({ firebase: { auth } }) => ({ auth })),
+  connect(({ firebase: { auth } }) => ({ auth }), { showModal }),
   withStyles(styles)
 )(LoginPage);

@@ -60,8 +60,20 @@ class SignIn extends Component {
   submit = theme => {
     const { mode, username, email, password, confirmPassword } = this.state;
     const { firebase } = this.props;
-    if (mode === 'signup' && password && password === confirmPassword) {
-      firebase.createUser({ email, password }, { username, email });
+    if (
+      mode === 'signup' &&
+      username &&
+      email &&
+      password &&
+      password === confirmPassword
+    ) {
+      firebase.createUser(
+        { email, password, signIn: false },
+        { username, email }
+      );
+    }
+    if (mode === 'signin' && password && email) {
+      firebase.login({ email, password }).then(this.handleClose);
     }
   };
 
