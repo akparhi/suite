@@ -54,7 +54,7 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
       <div className={classes.content}>
         <TodayIcon className={classes.logo} />
         <Typography variant="display2" gutterBottom className={classes.title}>
-          A Suite
+          Meaww Do
         </Typography>
 
         <Typography
@@ -63,7 +63,7 @@ export const LoginPage = ({ firebase, auth, location, classes }) => {
           align="center"
           className={classes.subtitle}
         >
-          From work to play, A Suite is the easiest way to get stuff done, every
+          From work to play, MeawwDo is the easiest way to get stuff done, every
           day.
         </Typography>
         <Button

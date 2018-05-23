@@ -2,25 +2,27 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import { showModal } from 'actions/modal';
+
 import withStyles from '@material-ui/core/styles/withStyles';
-import Link from 'react-router-dom/Link';
 import Divider from '@material-ui/core/Divider';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import EditIcon from '@material-ui/icons/Edit';
-import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import EditIcon from '@material-ui/icons/Edit';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
+
+import { withUIConsumer } from 'providers/ui';
+import { backgrounds, themes } from 'utils/constants';
+import { showModal } from 'actions/modal';
+import { resetStore } from 'actions/util';
+
+import Loader from 'lib/Loader';
 import Spacer from 'lib/Spacer';
 import TaskList from 'components/Tasks/TaskList';
 import AddTask from 'components/Tasks/AddTask';
-import { withUIConsumer } from 'providers/ui';
-import { backgrounds, themes } from 'utils/constants';
-import Loader from 'lib/Loader';
-
-const HomeLink = props => <Link to="/" {...props} />;
 
 const styles = {
   container: {
@@ -46,13 +48,9 @@ const styles = {
     alignItems: 'center',
     padding: '96px 16px 16px 16px'
   },
-  homeButton: {
-    color: '#fff'
-  },
   title: {
     color: '#fff',
-    marginLeft: 2,
-    marginBottom: 0
+    marginLeft: 14
   },
   listSelect: {
     fontSize: 36,
@@ -69,7 +67,14 @@ const styles = {
   }
 };
 
-const Tasks = ({ classes, tasklists, ctx, showModal }) => {
+const Tasks = ({
+  classes,
+  firebase,
+  tasklists,
+  ctx,
+  showModal,
+  resetStore
+}) => {
   if (!isLoaded(tasklists)) {
     return <Loader />;
   }
@@ -104,15 +109,7 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
         }}
       />
       <div className={classes.header}>
-        <IconButton
-          component={HomeLink}
-          size="large"
-          aria-label="Home Link"
-          className={classes.homeButton}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-        <div>
+        <div className={classes.title}>
           <Select
             value={currentTaskListId}
             className={classes.listSelect}
@@ -159,6 +156,18 @@ const Tasks = ({ classes, tasklists, ctx, showModal }) => {
             </IconButton>
           </div>
         )}
+        <div>
+          <IconButton
+            onClick={() => {
+              resetStore();
+              firebase.logout();
+              ctx.actions.changeTaskListId('__new');
+            }}
+            className={classes.actionButton}
+          >
+            <PowerSettingsNewIcon style={{ fontSize: 20 }} />
+          </IconButton>
+        </div>
       </div>
 
       <TaskList taskListId={currentTaskListId} tasklists={tasklists} />
@@ -194,7 +203,7 @@ export default compose(
         tasklists: data.tasklists
       };
     },
-    { showModal }
+    { showModal, resetStore }
   ),
   withStyles(styles)
 )(Tasks);

@@ -4,13 +4,11 @@ import Route from 'react-router-dom/Route';
 
 import Loadable from 'packages/Loadable';
 
-const Home = Loadable(() => import('components/Home'));
 const Tasks = Loadable(() => import('components/Tasks'));
 
 const AppRoutes = () => (
   <Switch>
-    <Route exact path="/" component={Home} />
-    <Route exact path="/tasks" component={Tasks} />
+    <Route exact path="/" component={Tasks} />
   </Switch>
 );
 
