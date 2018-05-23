@@ -6,11 +6,13 @@ import Loadable from 'packages/Loadable';
 const EditTaskList = Loadable(() => import('components/modals/EditTaskList'));
 const EditTask = Loadable(() => import('components/modals/EditTask'));
 const TaskListTheme = Loadable(() => import('components/modals/TaskListTheme'));
+const SignIn = Loadable(() => import('components/modals/SignIn'));
 
 const MODALS = {
   EDIT_TASKLIST: EditTaskList,
   EDIT_TASK: EditTask,
-  TASKLIST_THEME: TaskListTheme
+  TASKLIST_THEME: TaskListTheme,
+  SIGNIN: SignIn
 };
 
 const ModalRoot = props => {

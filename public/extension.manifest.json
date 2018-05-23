@@ -1,0 +1,13 @@
+{
+  "short_name": "A Suite",
+  "name": "A Suite",
+  "manifest_version": 2,
+  "version": "1.0",
+  "browser_action": {
+    "default_popup": "index.html",
+    "default_title": "React Ext"
+  },
+  "permissions": ["identity"],
+  "content_security_policy":
+    "script-src 'self' https://www.gstatic.com/ https://a-suite.firebaseio.com http://a-suite.firebaseapp.com https://a-suite.firebaseapp.com https://www.googleapis.com https://apis.google.com; object-src 'self'"
+}

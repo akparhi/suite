@@ -111,7 +111,7 @@ const AddTask = ({ classes, showModal, taskListId, tasklists }) => {
           Add a task
         </Button>
       </div>
-      {renderTaskStats(tasklists[taskListId], taskListId, classes)}
+      {tasklists && renderTaskStats(tasklists[taskListId], taskListId, classes)}
     </div>
   );
 };
