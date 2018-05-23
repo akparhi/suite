@@ -44,7 +44,6 @@ class SignIn extends Component {
   state = {
     open: true,
     mode: this.props.mode || 'signin',
-    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -58,19 +57,15 @@ class SignIn extends Component {
     this.setState({ mode: this.state.mode === 'signin' ? 'signup' : 'signin' });
 
   submit = theme => {
-    const { mode, username, email, password, confirmPassword } = this.state;
+    const { mode, email, password, confirmPassword } = this.state;
     const { firebase } = this.props;
     if (
       mode === 'signup' &&
-      username &&
       email &&
       password &&
       password === confirmPassword
     ) {
-      firebase.createUser(
-        { email, password, signIn: false },
-        { username, email }
-      );
+      firebase.createUser({ email, password }).then(this.handleClose);
     }
     if (mode === 'signin' && password && email) {
       firebase.login({ email, password }).then(this.handleClose);
@@ -78,14 +73,7 @@ class SignIn extends Component {
   };
 
   render() {
-    const {
-      open,
-      mode,
-      username,
-      email,
-      password,
-      confirmPassword
-    } = this.state;
+    const { open, mode, email, password, confirmPassword } = this.state;
     const { classes } = this.props;
 
     return (
@@ -111,15 +99,6 @@ class SignIn extends Component {
         </div>
         <Divider light />
         <div className={classes.body}>
-          {mode === 'signup' && (
-            <Input
-              placeholder="Name"
-              fullWidth
-              value={username}
-              onChange={this.handleChange('username')}
-              className={classes.input}
-            />
-          )}
           <Input
             placeholder="Email"
             fullWidth
@@ -128,7 +107,7 @@ class SignIn extends Component {
             className={classes.input}
           />
           <Input
-            placeholder="Enter title"
+            placeholder="Password"
             fullWidth
             type="password"
             value={password}
@@ -137,7 +116,7 @@ class SignIn extends Component {
           />
           {mode === 'signup' && (
             <Input
-              placeholder="Enter title"
+              placeholder="Confirm password"
               fullWidth
               type="password"
               value={confirmPassword}

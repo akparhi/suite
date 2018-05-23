@@ -17,7 +17,6 @@ const firebaseConfig = {
   databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL
 };
 const rrfConfig = {
-  userProfile: 'users',
   attachAuthIsReady: true,
   firebaseStateName: 'firebase'
 };
