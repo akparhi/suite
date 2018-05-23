@@ -10,5 +10,5 @@
   },
   "permissions": ["identity"],
   "content_security_policy":
-    "script-src 'self' https://www.gstatic.com/ https://a-suite.firebaseio.com http://a-suite.firebaseapp.com https://a-suite.firebaseapp.com https://www.googleapis.com https://apis.google.com; object-src 'self'"
+    "script-src 'self' https://apis.google.com; object-src 'self'"
 }
